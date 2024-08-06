@@ -4,9 +4,12 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 import datetime as dt
 import seaborn as sns
+# clean data
 start = dt.datetime(2024,7,1)
 end = dt.datetime.now()
 df = pd.read_csv("BTC-USD.csv",parse_dates = ["Date"], index_col = "Date")
+timeframe = df.loc[start :end ,:]
+
 # draw overall chart
 fig = df.plot(legend = True, kind ='line', xlabel = "Years", ylabel = "Price").figure
 plt.xticks(fontsize = 10)
@@ -15,8 +18,7 @@ plt.figure(figsize = (10,5))
 plt.show()   
 
 # draw general candle plots
-timeframe = df.loc[start :end ,:]
-fig = mpf.plot(timeframe, type = 'candle', volume =True, style = 'yahoo')
+fig = mpf.plot(timeframe, type = 'candle', volume =True, style = 'yahoo', mav = (3,6,9))
 plt.show()
 
 # draw line chart using seaborn
