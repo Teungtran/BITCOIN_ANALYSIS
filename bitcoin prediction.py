@@ -20,7 +20,7 @@ scaler = MinMaxScaler(feature_range=(0,1))
 scaled_data = scaler.fit_transform(timeframe['Close'].values.reshape(-1,1))
 prediction_days = 60
 future = 30
-# give detail of the chart ( split the data into x_train, y_train dataset)
+# give detail of the chart (split data into x_train, y_train) 
 x_train = []
 y_train =[]
 
@@ -43,6 +43,8 @@ model.add(Dropout(0,2))
 model.add(Dense(units = 1))
 #compiling and training 
 model.compile(optimizer = 'adam', loss ='mean_squared_error')
+# epochs: How many times the data is trained in network
+# batch_size: The number of training samples in the network at once 
 model.fit(x_train, y_train, epochs  = 25, batch_size = 30)
 # testing
 test_start = dt.datetime(2023,1,6)
@@ -75,16 +77,14 @@ plt.legend(loc = 'upper left')
 plt.show()
 
 # PREDICT A DAY AHEAD
-#train data
 real_data = [model_input[len(model_input)+1-prediction_days:len(model_input)+1,0]]
 real_data = np.array(real_data)
 real_data = np.reshape(x_test, (x_test.shape[0],x_test.shape[1],1))
-# create model
+
 prediction = model.predict(real_data)
 prediction = scaler.inverse_transform(prediction)
 prediction = prediction[0]
 
 print("prediction price for the next day is", prediction)
 
-# THIS IS NOT 100% CORRECT!!!!
 
