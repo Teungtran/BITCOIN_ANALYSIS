@@ -5,6 +5,7 @@ import datetime as dt
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dense, Dropout, LSTM
 from tensorflow.keras.models import Sequential
+# clean data
 crypto = 'BTC'
 curr ='USD'
 start = dt.datetime(2023,1,7)
@@ -31,7 +32,7 @@ x_train = np.array(x_train)
 y_train = np.array(y_train)
 x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1],1))
 
-# create model
+# create model LSTM
 model = Sequential()
 model.add(LSTM(units = 50, return_sequences = True, input_shape = (x_train.shape[1],1)))
 model.add(Dropout(0,2))
@@ -40,7 +41,7 @@ model.add(Dropout(0,2))
 model.add(LSTM(units = 50))
 model.add(Dropout(0,2))
 model.add(Dense(units = 1))
-
+#compiling and training 
 model.compile(optimizer = 'adam', loss ='mean_squared_error')
 model.fit(x_train, y_train, epochs  = 25, batch_size = 30)
 # testing
@@ -64,14 +65,15 @@ x_test = np.reshape(x_test, (x_test.shape[0],x_test.shape[1],1))
 predicted_price = model.predict(x_test)
 predicted_price = scaler.inverse_transform(predicted_price)
 
-# visualize
-plt.plot(actual_price, color ='green',label= 'Actual Price')
+# visualize (line chart)
+plt.plot(actual_price, color ='blue',label= 'Actual Price')
 plt.plot(predicted_price, color = 'r', label ='Predicted Price')
 plt.title('Bitcoin Prediction')
 plt.xlabel('Time')
 plt.ylabel('Price')
 plt.legend(loc = 'upper left')
 plt.show()
+
 # PREDICT A DAY AHEAD
 real_data = [model_input[len(model_input)+1-prediction_days:len(model_input)+1,0]]
 real_data = np.array(real_data)
@@ -79,6 +81,5 @@ real_data = np.reshape(x_test, (x_test.shape[0],x_test.shape[1],1))
 
 prediction = model.predict(real_data)
 prediction = scaler.inverse_transform(prediction)
-print()
-
+print(prediction)
 
