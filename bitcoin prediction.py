@@ -15,12 +15,12 @@ timeframe = df.loc[start :end ,:]
 
 # prepare data
 
-# give range
+# give range (Scale the data)
 scaler = MinMaxScaler(feature_range=(0,1))
 scaled_data = scaler.fit_transform(timeframe['Close'].values.reshape(-1,1))
 prediction_days = 60
 future = 30
-# give detail of the chart
+# give detail of the chart ( split the data into x_train, y_train dataset)
 x_train = []
 y_train =[]
 
@@ -75,11 +75,16 @@ plt.legend(loc = 'upper left')
 plt.show()
 
 # PREDICT A DAY AHEAD
+#train data
 real_data = [model_input[len(model_input)+1-prediction_days:len(model_input)+1,0]]
 real_data = np.array(real_data)
 real_data = np.reshape(x_test, (x_test.shape[0],x_test.shape[1],1))
-
+# create model
 prediction = model.predict(real_data)
 prediction = scaler.inverse_transform(prediction)
-print(prediction)
+prediction = prediction[0]
+
+print("prediction price for the next day is", prediction)
+
+# THIS IS NOT 100% CORRECT!!!!
 
