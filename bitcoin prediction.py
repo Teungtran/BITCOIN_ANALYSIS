@@ -84,7 +84,11 @@ real_data = np.reshape(x_test, (x_test.shape[0],x_test.shape[1],1))
 prediction = model.predict(real_data)
 prediction = scaler.inverse_transform(prediction)
 prediction = prediction[0]
-
 print("prediction price for the next day is", prediction)
+# check acuracy 
+def Accuracy_result(actual_price, prediction):
+    result = np.mean(100 * (np.abs(actual_price - prediction) / prediction))
+    return(100-result)
+print("The accuracy for this model is", str(Accuracy_result(actual_price,prediction)))
 
 
