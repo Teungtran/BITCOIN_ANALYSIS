@@ -6,8 +6,8 @@ import talib as tb
 
 pio.renderers.default= 'browser'
 ticker = 'BTC-USD'
-start = '2023-01-01'
-end = '2024-01-01'
+start = '2023-08-08'
+end = '2024-22-08'
 
 # extract data from yahoo finance
 df = yf.download(ticker, start, end)
